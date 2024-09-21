@@ -1,0 +1,43 @@
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
+@TeleOp(name = "TeleOp Mode")
+public class TeleOpMode extends LinearOpMode {
+    // Initialize motors and gamepad
+    private DcMotor armMotor;
+    private DcMotor wristMotor;
+    private Gamepad gamepad;
+
+    @Override
+    public void runOpMode() {
+        // Initialize motors and gamepad
+        armMotor = hardwareMap.get(DcMotor.class, "arm_motor");
+        wristMotor = hardwareMap.get(DcMotor.class, "wrist_motor");
+        gamepad = gamepad1;
+
+        // Wait for the game to start
+        waitForStart();
+
+        // Loop until the program is stopped
+        while (opModeIsActive()) {
+            // Get gamepad inputs
+            if (gamepad.dpad_up) {
+                armMotor.setPower(1.0); // Arm up
+            } else if (gamepad.dpad_down) {
+                armMotor.setPower(-1.0); // Arm down
+            } else {
+                armMotor.setPower(0.0); // Arm stop
+            }
+
+            if (gamepad.dpad_left) {
+                wristMotor.setPower(1.0); // Wrist out
+            } else if (gamepad.dpad_right) {
+                wristMotor.setPower(-1.0); // Wrist in
+            } else {
+                wristMotor.setPower(0.0); // Wrist stop
+            }
+        }
+    }
+}
